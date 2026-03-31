@@ -9,20 +9,17 @@ LoopNest lower_matmul(const OpNode &node) {
 	TensorLayout C = node.output;
 
 	int M = A.dim(0);
-	int K = A.dim(1); // == B.dim(0)
+	int K = A.dim(1);
 	int N = B.dim(1);
 
-	// construct indices from shapes
 	Index i{"i", M};
 	Index j{"j", N};
 	Index k{"k", K, .is_reduction = true};
 
-	// default loop order — scheduler will reorder
 	LoopNest nest;
 	nest.indices = {i, j, k};
 	nest.order = {"i", "j", "k"};
 
-	// describe the computation
 	nest.body = Compute{.output = TensorAccess{C.name, {"i", "j"}, true},
 						.inputs =
 							{
@@ -31,7 +28,6 @@ LoopNest lower_matmul(const OpNode &node) {
 							},
 						.op = Op::MATMUL};
 
-	// record tensor shapes for emitter
 	nest.tensors[A.name] = A;
 	nest.tensors[B.name] = B;
 	nest.tensors[C.name] = C;
@@ -62,19 +58,17 @@ LoopNest lower_relu(const OpNode &node) {
 	return nest;
 }
 
-LoopNest lower_bias_add(const OpNode &node) { 
-    TensorLayout x = node.inputs[0]; 
+LoopNest lower_bias_add(const OpNode &node) {
+	TensorLayout x = node.inputs[0];
 
-    int M = x.dim(0);
+	int M = x.dim(0);
 
-    Index i {"i", M};
-    LoopNest nest;
-    nest.indices = {i};
-    nest.order = {"i"};
-
+	Index i{"i", M};
+	LoopNest nest;
+	nest.indices = {i};
+	nest.order = {"i"};
 }
 
-// main entry point — converts full op graph to loop nests
 std::vector<LoopNest> lower(const std::vector<OpNode> &nodes) {
 	std::vector<LoopNest> nests;
 
@@ -89,7 +83,6 @@ std::vector<LoopNest> lower(const std::vector<OpNode> &nodes) {
 		case Op::BIAS_ADD:
 			nests.push_back(lower_bias_add(node));
 			break;
-		// add cases as you implement more ops
 		default:
 			throw std::runtime_error("unknown op in lower()");
 		}
