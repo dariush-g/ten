@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -30,8 +31,22 @@ struct IntLit : Expr {
 	std::string emit_c() const override { return std::to_string(value); }
 };
 
+struct FloatLit : Expr {
+	float value;
+	FloatLit(float value) : value(value) {}
+	std::string emit_c() const override {
+		std::ostringstream ss;
+		ss << value;
+		std::string s = ss.str();
+		if (s.find('.') == std::string::npos &&
+			s.find('e') == std::string::npos)
+			s += ".0";
+		return s + "f";
+	}
+};
+
 struct BinOp : Expr {
-	std::string op; // "+", "*", "+=", etc
+	std::string op; // "+", "*", "+=", ">"
 	ExprPtr lhs, rhs;
 	BinOp(std::string op, ExprPtr lhs, ExprPtr rhs)
 		: op(std::move(op)), lhs(std::move(lhs)), rhs(std::move(rhs)) {}

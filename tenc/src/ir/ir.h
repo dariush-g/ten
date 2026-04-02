@@ -31,7 +31,7 @@ struct Compute {
 struct LoopNest {
 	std::vector<Index> indices;
 	std::vector<std::string> order;
-
+	
 	Compute body;
 	std::unordered_map<std::string, TensorLayout> tensors;
 	std::unordered_map<std::string, std::pair<std::string, std::string>> tiled;

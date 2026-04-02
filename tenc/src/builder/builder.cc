@@ -4,6 +4,7 @@
 #include "../ir/lower.h"
 #include <iostream>
 #include <stdexcept>
+#include <unordered_set>
 
 namespace ten {
 
@@ -76,11 +77,9 @@ TensorLayout Builder::transpose(TensorLayout A) {
 KernelFn Builder::compile() {
 	auto loops = lower(nodes);
 
-	for (auto &loop : loops) {
-		auto stmts = codegen::lower_nest(loop);
-		auto code = codegen::emit_c(stmts);
-		std::cout << code << std::endl;
-	}
+	auto c = codegen::emit_c(loops);
+
+	std::cout << c << "\n";
 
 	return nullptr;
 }

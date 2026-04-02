@@ -9,5 +9,5 @@
 
 std::string emit_stmt(ten::codegen::StmtPtr stmt);
 namespace ten::codegen {
-std::string emit_c(const std::vector<StmtPtr> &stmts);
+std::string emit_c(const std::vector<LoopNest> &nests);
 } // namespace ten::codegen
