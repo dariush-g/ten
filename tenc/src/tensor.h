@@ -63,6 +63,8 @@ struct TensorLayout {
 	DType dtype;
 	std::string name = "";
 
+	TensorLayout() = default;
+
 	TensorLayout(std::vector<int> shape, DType dtype = DType::f32,
 				 std::string name = "")
 		: shape(std::move(shape)), dtype(dtype), name(std::move(name)) {}

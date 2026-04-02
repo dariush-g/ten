@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../builder/builder.hpp"
-#include "../opgraph.hpp"
+#include "../builder/builder.h"
+#include "../opgraph.h"
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -10,9 +10,9 @@ namespace ten {
 
 struct Index {
 	std::string name;
-	size_t extent;
+	int extent;
 
-	size_t tile_factor;
+	int tile_factor;
 	bool is_reduction;
 };
 

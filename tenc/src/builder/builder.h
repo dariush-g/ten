@@ -1,6 +1,6 @@
 #pragma once
-#include "../opgraph.hpp"
-#include "../tensor.hpp"
+#include "../opgraph.h"
+#include "../tensor.h"
 #include <vector>
 
 namespace ten {

@@ -1,4 +1,5 @@
-#include "builder.hpp"
+#include "builder.h"
+#include "../ir/lower.h"
 #include <stdexcept>
 
 namespace ten {
@@ -69,6 +70,10 @@ TensorLayout Builder::transpose(TensorLayout A) {
 	return add_node(Op::TRANSPOSE, {A}, out);
 }
 
-KernelFn Builder::compile() { return nullptr; }
+KernelFn Builder::compile() {
+	auto loops = lower(nodes);
+
+	return nullptr;
+}
 
 } // namespace ten

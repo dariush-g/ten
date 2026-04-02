@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../opgraph.hpp"
-#include "ir.hpp"
+#include "../opgraph.h"
+#include "ir.h"
 #include <vector>
 
 namespace ten {

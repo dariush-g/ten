@@ -1,5 +1,6 @@
-#include "../opgraph.hpp"
-#include "ir.hpp"
+#include "../opgraph.h"
+#include "ir.h"
+#include <stdexcept>
 
 namespace ten {
 
@@ -12,9 +13,18 @@ LoopNest lower_matmul(const OpNode &node) {
 	int K = A.dim(1);
 	int N = B.dim(1);
 
-	Index i{"i", M};
-	Index j{"j", N};
-	Index k{"k", K, .is_reduction = true};
+	Index i;
+	i.name = "i";
+	i.extent = M;
+
+	Index j;
+	j.name = "j";
+	j.extent = N;
+
+	Index k;
+	k.name = "k";
+	k.extent = K;
+	k.is_reduction = true;
 
 	LoopNest nest;
 	nest.indices = {i, j, k};
@@ -37,11 +47,17 @@ LoopNest lower_matmul(const OpNode &node) {
 
 LoopNest lower_relu(const OpNode &node) {
 	TensorLayout x = node.inputs[0];
+
 	int M = x.dim(0);
 	int N = x.dim(1);
 
-	Index i{"i", M};
-	Index j{"j", N};
+	Index i;
+	i.name = "i";
+	i.extent = M;
+
+	Index j;
+	j.name = "j";
+	j.extent = N;
 
 	LoopNest nest;
 	nest.indices = {i, j};
@@ -49,7 +65,10 @@ LoopNest lower_relu(const OpNode &node) {
 
 	nest.body =
 		Compute{.output = TensorAccess{node.output.name, {"i", "j"}, true},
-				.inputs = {TensorAccess{x.name, {"i", "j"}, false}},
+				.inputs =
+					{
+						TensorAccess{x.name, {"i", "j"}, false},
+					},
 				.op = Op::RELU};
 
 	nest.tensors[x.name] = x;
@@ -60,13 +79,37 @@ LoopNest lower_relu(const OpNode &node) {
 
 LoopNest lower_bias_add(const OpNode &node) {
 	TensorLayout x = node.inputs[0];
+	TensorLayout bias = node.inputs[1];
 
 	int M = x.dim(0);
+	int N = x.dim(1);
 
-	Index i{"i", M};
+	Index i;
+	i.name = "i";
+	i.extent = M;
+
+	Index j;
+	j.name = "j";
+	j.extent = N;
+
 	LoopNest nest;
-	nest.indices = {i};
-	nest.order = {"i"};
+	nest.indices = {i, j};
+	nest.order = {"i", "j"};
+
+	nest.body =
+		Compute{.output = TensorAccess{node.output.name, {"i", "j"}, true},
+				.inputs =
+					{
+						TensorAccess{x.name, {"i", "j"}, false},
+						TensorAccess{bias.name, {"j"}, false},
+					},
+				.op = Op::BIAS_ADD};
+
+	nest.tensors[x.name] = x;
+	nest.tensors[bias.name] = bias;
+	nest.tensors[node.output.name] = node.output;
+
+	return nest;
 }
 
 std::vector<LoopNest> lower(const std::vector<OpNode> &nodes) {

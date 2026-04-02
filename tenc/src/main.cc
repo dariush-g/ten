@@ -1,4 +1,4 @@
-#include "ten.hpp"
+#include "ten.h"
 #include <iostream>
 
 int main() {
@@ -13,6 +13,5 @@ int main() {
 
 	auto fn = b.compile();
 
-	std::cout << "built graph with 3 nodes" << std::endl;
 	return 0;
 }
