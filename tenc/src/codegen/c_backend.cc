@@ -1,24 +1,14 @@
 #include "c_backend.h"
+#include <sstream>
 
-std::unordered_map<std::string, int>
-build_tensor_index(const ten::LoopNest &nest) {
-	std::unordered_map<std::string, int> idx;
-	int i = 0;
-	for (auto &[name, layout] : nest.tensors) {
-		idx[name] = i++;
-	}
-	return idx;
-}
-
-std::string emit_index(const ten::TensorAccess &access,
-					   const ten::LoopNest &nest) {}
-
-std::string emit_compute(const ten::Compute &compute, const ten::LoopNest &nest,
-						 const std::string &indent) {}
-
-std::string emit_nest(const ten::LoopNest &nest,
-					  const std::unordered_map<std::string, int> &tensor_idx) {}
+std::string emit_stmt(ten::codegen::StmtPtr stmt) { return (*stmt).emit_c(0); }
 
 namespace ten::codegen {
-std::string emit_c(const std::vector<ten::LoopNest> &nests) {}
+std::string emit_c(const std::vector<StmtPtr> &stmts) {
+	std::stringstream str;
+	for (auto stmt : stmts) {
+		str << emit_stmt(stmt);
+	}
+	return str.str();
+}
 } // namespace ten::codegen

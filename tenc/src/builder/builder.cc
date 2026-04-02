@@ -1,5 +1,8 @@
 #include "builder.h"
+#include "../codegen/c_backend.h"
+#include "../codegen/lower.h"
 #include "../ir/lower.h"
+#include <iostream>
 #include <stdexcept>
 
 namespace ten {
@@ -72,6 +75,12 @@ TensorLayout Builder::transpose(TensorLayout A) {
 
 KernelFn Builder::compile() {
 	auto loops = lower(nodes);
+
+	for (auto &loop : loops) {
+		auto stmts = codegen::lower_nest(loop);
+		auto code = codegen::emit_c(stmts);
+		std::cout << code << std::endl;
+	}
 
 	return nullptr;
 }
