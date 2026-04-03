@@ -91,7 +91,7 @@ namespace ten {
 				default: key += "uk";
 					break;
 			}
-			for (auto d: node.output.shape)
+			for (const auto d: node.output.shape)
 				key += "_" + std::to_string(d);
 			key += "__";
 		}
@@ -111,6 +111,6 @@ namespace ten {
 
 		const std::string key = make_cache_key();
 		auto &cached = ten::runtime::get_or_compile(key, code, tensor_order);
-		return CompiledKernel(cached.fn, tensor_order, std::move(all_layouts));
+		return {cached.fn, tensor_order, std::move(all_layouts)};
 	}
 } // namespace ten

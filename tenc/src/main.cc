@@ -1,7 +1,8 @@
 #include "ten.h"
 #include <iostream>
 
-int main() {
+int main()
+{
 	float A_data[] = {1.0f, 2.0f};
 	float B_data[] = {3.0f, 4.0f};
 	float bias_data[] = {0.5f};
@@ -17,7 +18,10 @@ int main() {
 
 	auto kernel = b.compile();
 	kernel({{"A", A_data}, {"B", B_data}, {"bias", bias_data}});
-	
+
+	auto result = kernel.get(E);
+
+	std::cout << result << std::endl;
 
 	return 0;
 }

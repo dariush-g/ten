@@ -3,6 +3,7 @@
 #include <dlfcn.h>
 #include <fstream>
 #include <stdexcept>
+#include <unordered_map>
 
 namespace ten::runtime {
     static std::unordered_map<std::string, CachedKernel> cache;
