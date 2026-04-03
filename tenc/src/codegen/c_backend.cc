@@ -2,20 +2,20 @@
 #include "lower.h"
 #include <sstream>
 
-std::string emit_stmt(ten::codegen::StmtPtr stmt) { return (*stmt).emit_c(0); }
+std::string emit_stmt(const ten::codegen::StmtPtr &stmt) { return stmt->emit_c(0); }
 
 namespace ten::codegen {
-	std::string emit_c(const std::vector<LoopNest> &nests) {
+	std::pair<std::string, std::vector<std::string> > emit_c(const std::vector<LoopNest> &nests) {
 		std::ostringstream ss;
-		ss << "#include <stdint.h>\n\n";
-		ss << "void kernel(float** tensors, int n) {\n";
+		ss << "#include <stdint.h>\n#include <stdio.h>\n";
+		ss << "extern \"C\" void kernel(float** tensors, int n) {\n";
 
 		std::vector<std::string> tensor_order;
 		std::unordered_map<std::string, TensorLayout> all_tensors;
 
 		for (auto &nest: nests) {
 			for (auto &[name, layout]: nest.tensors) {
-				if (!all_tensors.count(name)) {
+				if (!all_tensors.contains(name)) {
 					tensor_order.push_back(name);
 					all_tensors[name] = layout;
 				}
@@ -23,7 +23,7 @@ namespace ten::codegen {
 		}
 
 		std::unordered_map<std::string, int> tensor_idx;
-		for (int i = 0; i < (int) tensor_order.size(); i++)
+		for (int i = 0; i < static_cast<int>(tensor_order.size()); i++)
 			tensor_idx[tensor_order[i]] = i;
 
 		for (auto &name: tensor_order) {
@@ -35,13 +35,13 @@ namespace ten::codegen {
 		ss << "\n";
 
 		for (auto &nest: nests) {
-			auto stmts = lower_nest(nest, tensor_idx);
-			for (auto &stmt: stmts)
+			for (auto stmts = lower_nest(nest, tensor_idx)->body; auto &stmt: stmts)
 				ss << stmt->emit_c(1);
 			ss << "\n";
 		}
 
+
 		ss << "}\n";
-		return ss.str();
+		return {ss.str(), tensor_order};
 	}
 } // namespace ten::codegen

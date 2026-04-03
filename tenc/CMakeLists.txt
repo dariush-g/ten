@@ -12,7 +12,10 @@ set(LIB_SRC
         src/codegen/lower.cc
         src/codegen/c_backend.cc
         src/runtime/runtime.cc
+        src/runtime/runtime.h
+        src/types.h
 )
+
 
 add_executable(tenc src/main.cc ${LIB_SRC})
 target_include_directories(tenc PRIVATE src)

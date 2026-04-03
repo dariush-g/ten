@@ -7,7 +7,8 @@
 #include <unordered_map>
 #include <vector>
 
-std::string emit_stmt(ten::codegen::StmtPtr stmt);
+std::string emit_stmt(const ten::codegen::StmtPtr &stmt);
+
 namespace ten::codegen {
-std::string emit_c(const std::vector<LoopNest> &nests);
+    std::pair<std::string, std::vector<std::string> > emit_c(const std::vector<LoopNest> &nests);
 } // namespace ten::codegen

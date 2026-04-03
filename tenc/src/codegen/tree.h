@@ -122,7 +122,7 @@ namespace ten::codegen {
 		}
 
 
-		[[nodiscard]] std::string emit_c(int indent) const {
+		[[nodiscard]] std::string emit_c(const int indent) const override {
 			return indent_str(indent) + lhs->emit_c() + " " + op + " " +
 			       rhs->emit_c() + ";\n";
 		}
@@ -133,11 +133,11 @@ namespace ten::codegen {
 		int start, end;
 		std::vector<StmtPtr> body;
 
-		ForLoop(std::string var, int start, int end)
+		ForLoop(std::string var, const int start, const int end)
 			: var(std::move(var)), start(start), end(end) {
 		}
 
-		[[nodiscard]] std::string emit_c(const int indent) const {
+		[[nodiscard]] std::string emit_c(const int indent) const override {
 			std::string s = indent_str(indent) + "for (int " + var + " = " +
 			                std::to_string(start) + "; " + var + " < " +
 			                std::to_string(end) + "; " + var + "++) {\n";
@@ -152,11 +152,11 @@ namespace ten::codegen {
 		std::string type, name;
 		int tensor_idx;
 
-		DeclPtr(std::string type, std::string name, int tensor_idx)
+		DeclPtr(std::string type, std::string name, const int tensor_idx)
 			: type(std::move(type)), name(std::move(name)), tensor_idx(tensor_idx) {
 		}
 
-		[[nodiscard]] std::string emit_c(const int indent) const {
+		[[nodiscard]] std::string emit_c(const int indent) const override {
 			return indent_str(indent) + type + "* " + name + " = (" + type +
 			       "*)tensors[" + std::to_string(tensor_idx) + "];\n";
 		}
@@ -166,10 +166,10 @@ namespace ten::codegen {
 		std::string name;
 		std::vector<StmtPtr> body;
 
-		explicit Function(std::string name) : name(std::move(name)) {
+		explicit Function(std::string name, std::vector<StmtPtr> body) : name(std::move(name)), body(std::move(body)) {
 		}
 
-		[[nodiscard]] std::string emit_c(const int indent) const {
+		[[nodiscard]] std::string emit_c(const int indent) const override {
 			std::string s = "void " + name + "(float** tensors, int n) {\n";
 			for (auto &stmt: body)
 				s += stmt->emit_c(indent + 1);

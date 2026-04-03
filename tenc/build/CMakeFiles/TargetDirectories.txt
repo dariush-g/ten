@@ -1,0 +1,3 @@
+/Users/dariushghassemieh/ten/tenc/build/CMakeFiles/tenc.dir
+/Users/dariushghassemieh/ten/tenc/build/CMakeFiles/edit_cache.dir
+/Users/dariushghassemieh/ten/tenc/build/CMakeFiles/rebuild_cache.dir

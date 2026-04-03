@@ -1,29 +1,34 @@
 #pragma once
+
+#include "../compiled_kernel.h"
 #include "../opgraph.h"
 #include "../tensor.h"
 #include <vector>
+#include <string>
 
 namespace ten {
+	class Builder {
+	public:
+		TensorLayout matmul(const TensorLayout &A, const TensorLayout &B);
 
-using KernelFn = void (*)(float **, int);
+		TensorLayout bias_add(const TensorLayout &x, const TensorLayout &bias);
 
-class Builder {
-public:
-	TensorLayout matmul(TensorLayout A, TensorLayout B);
-	TensorLayout bias_add(TensorLayout x, TensorLayout bias);
-	TensorLayout relu(TensorLayout x);
-	TensorLayout add(TensorLayout A, TensorLayout B);
-	TensorLayout transpose(TensorLayout A);
+		TensorLayout relu(const TensorLayout &x);
 
-	KernelFn compile();
+		TensorLayout add(const TensorLayout &A, const TensorLayout &B);
 
-	Builder() = default;
+		TensorLayout transpose(const TensorLayout &A);
 
-private:
-	std::vector<OpNode> nodes;
+		[[nodiscard]] std::string make_cache_key() const;
 
-	TensorLayout add_node(Op op, std::vector<TensorLayout> inputs,
-						  TensorLayout output);
-};
+		[[nodiscard]] CompiledKernel compile() const;
 
+		Builder() = default;
+
+	private:
+		std::vector<OpNode> nodes;
+
+		TensorLayout add_node(Op op, const std::vector<TensorLayout> &inputs,
+		                      TensorLayout output);
+	};
 } // namespace ten

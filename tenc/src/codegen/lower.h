@@ -5,13 +5,13 @@
 #include <vector>
 
 namespace ten::codegen {
-std::vector<StmtPtr> lower_index(const TensorAccess &access,
-								 const LoopNest &nest);
+	std::vector<StmtPtr> lower_index(const TensorAccess &access,
+	                                 const LoopNest &nest);
 
-std::vector<StmtPtr> lower_compute(const Compute &compute,
-								   const LoopNest &nest);
+	std::vector<StmtPtr> lower_compute(const Compute &compute,
+	                                   const LoopNest &nest);
 
-std::vector<StmtPtr>
-lower_nest(const LoopNest &nest,
-		   const std::unordered_map<std::string, int> &tensor_idx);
+	std::shared_ptr<Function>
+	lower_nest(const LoopNest &nest,
+	           const std::unordered_map<std::string, int> &tensor_idx);
 } // namespace ten::codegen

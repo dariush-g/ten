@@ -7,36 +7,34 @@
 #include <vector>
 
 namespace ten {
+	struct Index {
+		std::string name;
+		int extent;
 
-struct Index {
-	std::string name;
-	int extent;
+		int tile_factor = 1;
+		bool is_reduction = false;
+	};
 
-	int tile_factor;
-	bool is_reduction;
-};
+	struct TensorAccess {
+		std::string tensor_name;
+		std::vector<std::string> indices;
+		bool is_output;
+	};
 
-struct TensorAccess {
-	std::string tensor_name;
-	std::vector<std::string> indices;
-	bool is_output;
-};
+	struct Compute {
+		TensorAccess output;
+		std::vector<TensorAccess> inputs;
+		Op op;
+	};
 
-struct Compute {
-	TensorAccess output;
-	std::vector<TensorAccess> inputs;
-	Op op;
-};
+	struct LoopNest {
+		std::vector<Index> indices;
+		std::vector<std::string> order;
 
-struct LoopNest {
-	std::vector<Index> indices;
-	std::vector<std::string> order;
-	
-	Compute body;
-	std::unordered_map<std::string, TensorLayout> tensors;
-	std::unordered_map<std::string, std::pair<std::string, std::string>> tiled;
+		Compute body;
+		std::unordered_map<std::string, TensorLayout> tensors;
+		std::unordered_map<std::string, std::pair<std::string, std::string> > tiled;
 
-	std::vector<Compute> epilogue;
-};
-
+		std::vector<Compute> epilogue;
+	};
 } // namespace ten
