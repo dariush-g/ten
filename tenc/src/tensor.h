@@ -16,7 +16,7 @@ enum class DType {
 	i64,
 };
 
-inline int dtype_size(DType dt) {
+inline int dtype_size(const DType dt) {
 	switch (dt) {
 	case DType::f16:
 		return 2;
@@ -35,6 +35,7 @@ inline int dtype_size(DType dt) {
 	case DType::i64:
 		return 8;
 	}
+	return 0;
 }
 
 inline const char *dtype_str(DType dt) {
