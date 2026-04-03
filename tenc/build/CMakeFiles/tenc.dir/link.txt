@@ -1,1 +1,0 @@
-/usr/bin/c++ -g -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/tenc.dir/src/main.cc.o CMakeFiles/tenc.dir/src/builder/builder.cc.o CMakeFiles/tenc.dir/src/ir/lower.cc.o CMakeFiles/tenc.dir/src/codegen/lower.cc.o CMakeFiles/tenc.dir/src/codegen/c_backend.cc.o CMakeFiles/tenc.dir/src/runtime/runtime.cc.o -o tenc  -ldl

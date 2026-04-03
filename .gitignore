@@ -2,3 +2,11 @@ tenc/tenc
 .vscode/
 .idea
 cmake-build-debug/
+build/
+*.o
+*.d
+tenc
+CMakeFiles/
+MakeFile
+CMakeCache.txt
+cmake_install.cmake
