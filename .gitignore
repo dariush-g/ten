@@ -1,3 +1,4 @@
 tenc/tenc
 .vscode/
 .idea
+cmake-build-debug/
