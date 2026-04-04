@@ -12,7 +12,6 @@ add_library(ten STATIC
         src/codegen/lower.cc
         src/codegen/c_backend.cc
         src/runtime/runtime.cc
-        tests/mm_ba_rl.h
         src/scheduler/scheduler.h
         src/scheduler/tile_index.cc
 )

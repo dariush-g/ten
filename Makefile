@@ -48,10 +48,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /opt/clion/bin/cmake/linux/x64/bin/cmake
+CMAKE_COMMAND = /usr/bin/cmake
 
 # The command to remove a file.
-RM = /opt/clion/bin/cmake/linux/x64/bin/cmake -E rm -f
+RM = /usr/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -78,7 +78,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake to regenerate build system..."
-	/opt/clion/bin/cmake/linux/x64/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/usr/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -268,7 +268,6 @@ src/scheduler/tile_index.o: src/scheduler/tile_index.cc.o
 # target to build an object file
 src/scheduler/tile_index.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ten.dir/build.make CMakeFiles/ten.dir/src/scheduler/tile_index.cc.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ten_tests.dir/build.make CMakeFiles/ten_tests.dir/src/scheduler/tile_index.cc.o
 .PHONY : src/scheduler/tile_index.cc.o
 
 src/scheduler/tile_index.i: src/scheduler/tile_index.cc.i
@@ -277,7 +276,6 @@ src/scheduler/tile_index.i: src/scheduler/tile_index.cc.i
 # target to preprocess a source file
 src/scheduler/tile_index.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ten.dir/build.make CMakeFiles/ten.dir/src/scheduler/tile_index.cc.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ten_tests.dir/build.make CMakeFiles/ten_tests.dir/src/scheduler/tile_index.cc.i
 .PHONY : src/scheduler/tile_index.cc.i
 
 src/scheduler/tile_index.s: src/scheduler/tile_index.cc.s
@@ -286,7 +284,6 @@ src/scheduler/tile_index.s: src/scheduler/tile_index.cc.s
 # target to generate assembly for a file
 src/scheduler/tile_index.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ten.dir/build.make CMakeFiles/ten.dir/src/scheduler/tile_index.cc.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ten_tests.dir/build.make CMakeFiles/ten_tests.dir/src/scheduler/tile_index.cc.s
 .PHONY : src/scheduler/tile_index.cc.s
 
 tests/test.o: tests/test.cc.o
