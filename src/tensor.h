@@ -24,7 +24,6 @@ namespace ten
 		switch (dt)
 		{
 		case DType::f16:
-			return 2;
 		case DType::bf16:
 			return 2;
 		case DType::f32:

@@ -14,6 +14,7 @@ add_library(ten STATIC
         src/runtime/runtime.cc
         tests/mm_ba_rl.h
         src/scheduler/scheduler.h
+        src/scheduler/tile_index.cc
 )
 target_include_directories(ten PUBLIC src)
 target_link_libraries(ten dl)
