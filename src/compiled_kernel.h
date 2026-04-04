@@ -29,16 +29,20 @@ namespace ten
       {
       }
 
-      void operator()(const std::unordered_map<std::string, float*>& named)
+      void operator()(const std::vector<std::pair<TensorLayout, float*>>& named)
       {
          owned_buffers_.clear();
          ptrs_.clear();
          std::vector<float*> ptrs(tensor_order_.size());
 
+         std::unordered_map<std::string, float*> by_name;
+         for (auto& [layout, data] : named)
+            by_name[layout.name] = data;
+
          for (size_t i = 0; i < tensor_order_.size(); i++)
          {
             auto& name = tensor_order_[i];
-            if (auto it = named.find(name); it != named.end())
+            if (auto it = by_name.find(name); it != by_name.end())
             {
                ptrs[i] = it->second;
             }

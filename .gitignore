@@ -1,12 +1,13 @@
-tenc/tenc
 .vscode/
 .idea
 cmake-build-debug/
 build/
 *.o
 *.d
-tenc
+ten
 CMakeFiles/
 MakeFile
 CMakeCache.txt
 cmake_install.cmake
+libten.a
+ten_tests

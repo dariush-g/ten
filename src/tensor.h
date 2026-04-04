@@ -82,7 +82,7 @@ namespace ten
 		}
 
 		[[nodiscard]] int rank() const { return static_cast<int>(shape.size()); }
-		[[nodiscard]] int dim(int i) const { return shape[i]; }
+		[[nodiscard]] int dim(const int i) const { return shape[i]; }
 		[[nodiscard]] int element_size() const { return dtype_size(dtype); }
 	};
 

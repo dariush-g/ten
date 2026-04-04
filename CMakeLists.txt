@@ -6,17 +6,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_compile_options(-Wall -Wextra)
 
-set(LIB_SRC
+add_library(ten STATIC
         src/builder/builder.cc
         src/ir/lower.cc
         src/codegen/lower.cc
         src/codegen/c_backend.cc
         src/runtime/runtime.cc
-        src/runtime/runtime.h
-        src/types.h
+        tests/mm_ba_rl.h
+        src/scheduler/scheduler.h
 )
+target_include_directories(ten PUBLIC src)
+target_link_libraries(ten dl)
 
-
-add_executable(tenc src/main.cc ${LIB_SRC})
-target_include_directories(tenc PRIVATE src)
-target_link_libraries(tenc dl)
+add_executable(ten_tests tests/test.cc)
+target_link_libraries(ten_tests ten)
