@@ -6,7 +6,7 @@ build/
 *.d
 ten
 CMakeFiles/
-MakeFile
+Makefile
 CMakeCache.txt
 cmake_install.cmake
 libten.a
