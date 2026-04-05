@@ -13,5 +13,5 @@ inline void test_tiling()
     auto D = b.bias_add(C, bias);
     auto E = b.relu(D);
 
-    auto kernel = b.compile();
+    auto kernel = b.compile(PRINT_C);
 }

@@ -13,7 +13,7 @@ namespace ten::scheduler
     public:
         Scheduler() = default;
 
-        static void run(std::vector<LoopNest>& nests, unsigned flags);
+        static void run(std::vector<LoopNest>& nests, unsigned flags = NONE);
 
         [[nodiscard]] static LoopNest reorder(LoopNest nest, std::vector<std::string> order);
         [[nodiscard]] static std::vector<LoopNest> fuse(const std::vector<LoopNest>& nests);

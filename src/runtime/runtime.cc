@@ -36,11 +36,12 @@ namespace ten::runtime
         if (!handle)
             throw std::runtime_error(std::string("dlopen: ") + dlerror());
 
-        void* sym = dlsym(handle, "kernel");
+        void* sym = dlsym(handle, key.c_str());
         if (!sym)
         {
+            const char* err = dlerror();
             dlclose(handle);
-            throw std::runtime_error(std::string("dlsym: ") + dlerror());
+            throw std::runtime_error(std::string("dlsym: ") + (err ? err : "symbol not found"));
         }
 
         CachedKernel kernel;

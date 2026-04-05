@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "scheduler.h"
 
 namespace ten::scheduler
@@ -15,10 +17,13 @@ namespace ten::scheduler
 
             nests = fuse(nests);
 
-        if (!(flags & NO_TILE))
-            for (auto& idx : nests[0].indices)
+
+        if (!(flags & NO_TILE) && !nests.empty())
+        {
+            for (const auto indices = nests[0].indices; const auto& idx : indices)
                 if (!idx.is_reduction)
                     if (const int f = pick_tile_factor(idx.extent); f > 1)
                         nests[0] = tile(nests[0], idx.name, f);
+        }
     }
 }
