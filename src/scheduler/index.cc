@@ -13,6 +13,7 @@ namespace ten::scheduler
 
     void Scheduler::run(std::vector<LoopNest>& nests, const unsigned flags)
     {
+
         if (!(flags & CompileFlags::NO_FUSE))
             nests = fuse(nests);
 

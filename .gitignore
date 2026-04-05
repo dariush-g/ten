@@ -13,3 +13,5 @@ libten.a
 ten_tests
 .cmake/api/v1/
 Testing/
+tests/digits/data/
+tests/digits/weights/

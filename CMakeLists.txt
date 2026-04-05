@@ -18,6 +18,7 @@ add_library(ten STATIC
         src/scheduler/reorder_index.cc
         src/scheduler/fuse_index.cc
         src/scheduler/index.cc
+        tests/digits/digits.h
 )
 target_include_directories(ten PUBLIC src)
 target_link_libraries(ten dl)
