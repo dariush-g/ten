@@ -1,9 +1,14 @@
 #include "builder.h"
+
+#include <iostream>
+
 #include "../codegen/c_backend.h"
 #include "../codegen/lower.h"
 #include "../ir/lower.h"
 #include <stdexcept>
 #include <unordered_set>
+#include <fstream>
+#include "flags.h"
 
 #include "runtime/runtime.h"
 #include "scheduler/scheduler.h"
@@ -112,13 +117,22 @@ namespace ten
 		return key;
 	}
 
-	CompiledKernel Builder::compile() const
+	CompiledKernel Builder::compile(const unsigned flags) const
 	{
 		auto loops = lower(nodes);
 
 		loops[0] = ten::scheduler::Scheduler::tile(loops[0], "i", 32);
 
 		const auto [code, tensor_order] = codegen::emit_c(loops);
+
+		if ((flags & CompileFlags::EMIT_C) == CompileFlags::EMIT_C)
+		{
+			std::ofstream outfile("kernel.c");
+			outfile << code << std::endl;
+			outfile.close();
+		}
+		if ((flags & CompileFlags::PRINT_C) == CompileFlags::PRINT_C)
+			std::cout << code << std::endl;
 
 		std::unordered_map<std::string, TensorLayout> all_layouts;
 		for (auto& nest : loops)
