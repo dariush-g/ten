@@ -12,3 +12,4 @@ cmake_install.cmake
 libten.a
 ten_tests
 .cmake/api/v1/
+Testing/

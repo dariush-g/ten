@@ -4,7 +4,7 @@
 
 int main()
 {
-    // test_matmul_bias_add_relu();
+    test_matmul_bias_add_relu();
     test_tiling();
 
     std::cout << "all tests passed" << std::endl;
