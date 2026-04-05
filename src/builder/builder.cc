@@ -121,18 +121,11 @@ namespace ten
 	{
 		auto loops = lower(nodes);
 
-		loops[0] = ten::scheduler::Scheduler::tile(loops[0], "i", 32);
+		const std::string key = make_cache_key();
 
-		const auto [code, tensor_order] = codegen::emit_c(loops);
+		scheduler::Scheduler::run(loops, flags);
 
-		if ((flags & CompileFlags::EMIT_C) == CompileFlags::EMIT_C)
-		{
-			std::ofstream outfile("kernel.c");
-			outfile << code << std::endl;
-			outfile.close();
-		}
-		if ((flags & CompileFlags::PRINT_C) == CompileFlags::PRINT_C)
-			std::cout << code << std::endl;
+		const auto [code, tensor_order] = codegen::emit_c(loops, key);
 
 		std::unordered_map<std::string, TensorLayout> all_layouts;
 		for (auto& nest : loops)
@@ -140,7 +133,15 @@ namespace ten
 				if (!all_layouts.contains(name))
 					all_layouts[name] = layout;
 
-		const std::string key = make_cache_key();
+		if (flags & CompileFlags::EMIT_C)
+		{
+			std::ofstream outfile(key + ".c");
+			outfile << code << std::endl;
+			outfile.close();
+		}
+		if (flags & CompileFlags::PRINT_C)
+			std::cout << code << std::endl;
+
 		auto& cached = ten::runtime::get_or_compile(key, code, tensor_order);
 		return {cached.fn, tensor_order, std::move(all_layouts)};
 	}

@@ -132,8 +132,7 @@ namespace ten::codegen
 		return stmts;
 	}
 
-	std::shared_ptr<Function> lower_nest(const LoopNest& nest,
-	                                     const std::unordered_map<std::string, int>& tensor_idx)
+	std::shared_ptr<Function> lower_nest(const LoopNest& nest)
 	{
 		std::vector<StmtPtr> stmts;
 
@@ -155,14 +154,28 @@ namespace ten::codegen
 			loops.push_back(std::make_shared<ForLoop>(idx_name, 0, index.extent));
 		}
 
+		int epilogue_level = static_cast<int>(loops.size()) - 1;
+		for (int i = static_cast<int>(loops.size()) - 1; i >= 0; i--)
+		{
+			if (find_index(nest.order[i]).is_reduction)
+			{
+				continue;
+			}
+			epilogue_level = i;
+			break;
+		}
+
 		for (auto& stmt : lower_compute(nest.body, nest))
 			loops.back()->body.push_back(stmt);
 
+		for (int i = static_cast<int>(loops.size()) - 1; i > epilogue_level; i--)
+			loops[i - 1]->body.push_back(loops[i]);
+
 		for (auto& ep : nest.epilogue)
 			for (auto& stmt : lower_compute(ep, nest))
-				loops.back()->body.push_back(stmt);
+				loops[epilogue_level]->body.push_back(stmt);
 
-		for (int i = static_cast<int>(loops.size()) - 1; i > 0; i--)
+		for (int i = epilogue_level; i > 0; i--)
 			loops[i - 1]->body.push_back(loops[i]);
 
 		stmts.push_back(loops[0]);

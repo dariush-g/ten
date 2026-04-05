@@ -19,7 +19,7 @@ inline void test_matmul_bias_add_relu()
     auto D = b.bias_add(C, bias);
     auto E = b.relu(D);
 
-    auto kernel = b.compile(EMIT_C);
+    auto kernel = b.compile();
     kernel({{A, A_data}, {B, B_data}, {bias, bias_data}});
 
     const auto [data, shape] = kernel.get(E);

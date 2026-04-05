@@ -16,9 +16,12 @@ add_library(ten STATIC
         src/scheduler/tile_index.cc
         src/flags.h
         src/scheduler/reorder_index.cc
+        src/scheduler/fuse_index.cc
+        src/scheduler/index.cc
 )
 target_include_directories(ten PUBLIC src)
 target_link_libraries(ten dl)
 
-add_executable(ten_tests tests/test.cc)
+add_executable(ten_tests tests/test.cc
+        tests/tiling.h)
 target_link_libraries(ten_tests ten)
